@@ -2,7 +2,7 @@ import express from "express"
 import ProductManager from "../ProductManager.js"
 
 const viewsRouter = express.Router()
-const productManager = new ProductManager("../src/data/products.json")
+const productManager = new ProductManager("./src/data/products.json")
 
 viewsRouter.get("/", async (req, res) => {
     try {
