@@ -1,19 +1,20 @@
 {
-  "name": "test",
+  "name": "actividad",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/app.js"
+    "dev": "node --watch ./src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
-    "random": "^5.1.1",
-    "socket.io": "^4.8.1"
+    "mongoose": "^8.11.0",
+    "mongoose-paginate-v2": "^1.9.0"
   }
 }
