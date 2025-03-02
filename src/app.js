@@ -1,9 +1,9 @@
 import express from "express"
-import connectMongoDB from "./db/db.js"
 import dotenv from "dotenv"
+import connectMongoDB from "./db/db.js"
 import { engine } from "express-handlebars"
-import productRouter from "./routes/product.routes.js"
 import viewsRouter from "./routes/views.routes.js"
+import productRouter from "./routes/product.routes.js"
 
 dotenv.config()
 
@@ -14,7 +14,7 @@ app.use(express.json())
 //HandleBars
 app.engine("handlebars", engine())
 app.set("view engine", "handlebars")
-app.set("views", "./views")
+app.set("views", "./src/views");
 
 connectMongoDB()
 
