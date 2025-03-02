@@ -1,24 +1,28 @@
 import express from "express"
-import ProductManager from "../ProductManager.js"
+import Product from "../models/products.model.js"
 
-const viewsRouter = express.Router()
-const productManager = new ProductManager("./src/data/products.json")
+const viewsRouter = express ()
 
-viewsRouter.get("/", async (req, res) => {
+viewsRouter.get("/", async(req, res) => {
     try {
-        const products = await productManager.getProducts()
-        res.render("home", { products })
+        const getProduct = parseInt(req.query.page) || 1
+        const limit = 20
+
+        const listProducts = await Product.paginate({}, {page, limit, lean: true})
+        res.render("home", listProducts)
     } catch (error) {
-        res.status(500).send({message: error.message})
+        res.status(500).send({status: "Error", message: error.message})
     }
 })
 
-viewsRouter.get("/realtimeproducts", async(req, res) => {
+viewsRouter.get("/:uid", async(req, res) => {
     try {
-        const products = await productManager.getProducts()
-        res.render("realTimeProducts", {products})
+        const uid = req.params.uid
+        const getProductById = await Product.paginate({uid})
+        console.log(getProductById)
+        res.status(200).send({payload: getProductById})
     } catch (error) {
-        res.status(500).send({message: error.message})
+        res.status(500).send({status: "Error", message: error.messages})
     }
 })
 

@@ -1,80 +1,36 @@
 import express from "express"
-import ProductManager from "./../ProductManager.js";
+import Product from "../models/products.model.js"
 
 const productRouter = express.Router()
-const productManager = new ProductManager("./data/products.json")
 
 productRouter.get("/", async(req, res) => {
     try {
-        const products = await productManager.getProducts();
-    
-        if(products.length === 0)return res.status(404).send({message: "Error, products not available"})
-    
-        res.status(200).send(products)
-    } catch (error) {
-        res.status(500).send({message: "Error to get products"})
-    }
-})
-
-productRouter.get("/:pid", async (req, res) => {
-    try {
-        const pid = parseInt(req.params.pid)
-        const productId = await productManager.getProductById(pid);
-    
-        if (productId.error) { 
-            return res.status(404).send({ message: "Error to consult product"});
-        }
+        const data = await Product.paginate({})
+        console.log(data)
         
-        res.status(200).send(productId);
-        
+        res.status(200).send({status: "success", payload: data})
     } catch (error) {
-        res.status(500).send({message: "Error to get item"})
+        res.status(500).send({status: "error", message: error.message})
     }
 })
 
 productRouter.post("/", async(req, res) => {
     try {
-        const productsAgred = req.body
-    
-        const add = await productManager.addProduct(productsAgred)
-    
-        res.status(201).json(add)
-        
+        const {
+            title,
+            description,
+            thumbnail,
+            price,
+            code,
+            stock
+        } = req.body
+
+        const status = stock === 0 ? false : true
+        const data = await Product.insertOne({title, description, thumbnail, price, code, stock, status})
+
+        res.status(201).send({status: "success", payload: data})
     } catch (error) {
-        res.status(500).send({message: `Error to post new products ${error}`})
-    }
-    
-})
-
-productRouter.put("/:pid", async(req, res) => {
-    try {
-        const pid = parseInt(req.params.pid)
-        const updateProduct = req.body
-        
-        const update = await productManager.setProductById(pid, updateProduct)
-        
-        if(!update){
-            return res.status(400).send({message: "Error id not available"})}
-        res.status(201).send(update)
-        
-    } catch (error) {
-        res.status(500).send({message: "Error to edit item"})
-    }
-})
-
-productRouter.delete("/:pid", async(req, res) => {
-    try {
-        const pid = parseInt(req.params.pid)
-        const productDelete = await productManager.deleteProductById(pid)
-
-        if (productDelete) { 
-            res.status(200).send({ message: "Success to delete item" })
-        } else {
-            res.status(404).send({ message: "Product not found" })
-        }
-
-    } catch (error) {
-        res.status(500).send({message: "Error to delete item"})
+        res.status(500).send({status: "error", message: error.message})
     }
 })
 
