@@ -1,9 +1,8 @@
 import mongoose from "mongoose"
-import Product from "../models/products.model.js"
 
 const connectMongoDB = async() => {
     try {
-        await mongoose.connect("mongodb+srv://codder:coder1221@ecommerce-cluster.um4wg.mongodb.net/ecommerceDB?retryWrites=true&w=majority&appName=ecommerce-cluster")
+        await mongoose.connect(process.env.URI_MONGODB)
         console.log("Conectado con mongoDB")
     } catch (error) {
         console.log("Error al conectar con mongoBD")
