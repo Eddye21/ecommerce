@@ -4,7 +4,6 @@ import Cart from "../models/cart.model.js"
 const cartRouter = express.Router()
 
 //Endpoits
-
 cartRouter.delete("/:cid/products/:pid", async (req, res) => {
     try {
         const { cid, pid } = req.params;
