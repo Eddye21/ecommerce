@@ -22,7 +22,7 @@ connectMongoDB()
 //Endpoits
 app.use("/", viewsRouter)
 app.use("/api/products", productRouter)
-app.use("/api/cart")
+app.use("/api/cart", cartRouter)
 
 app.listen(PORT, () => {
     console.log(`Server online in port : http://localhost:${PORT} `)
