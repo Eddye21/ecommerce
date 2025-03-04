@@ -8,23 +8,22 @@ import cartRouter from "./routes/cart.routes.js"
 import {Server} from "socket.io"
 import http from "http"
 
-//
-const app = express()
-app.use(express.static("public"))
+dotenv.config()
 
-///
+//Settings server
+const PORT = 8081
+const app = express()
 const server =http.createServer(app)
 const io = new Server(server)
-const PORT = 8081
 app.use(express.json())
-
-dotenv.config()
+app.use(express.static("public"))
 
 //HandleBars
 app.engine("handlebars", engine())
 app.set("view engine", "handlebars")
 app.set("views", "./src/views")
 
+//Connect MongoDB
 connectMongoDB()
 
 //Endpoits
@@ -37,6 +36,7 @@ io.on("connection", (socket) => {
     console.log("Nuevo usuario conectado")
 })
 
+//Listen server
 server.listen(PORT, () => {
     console.log(`Server online in port : http://localhost:${PORT} `)
 })

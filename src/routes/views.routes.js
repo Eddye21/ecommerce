@@ -17,7 +17,7 @@ viewsRouter.get("/", async(req, res) => {
 
 viewsRouter.get("/realTimeProducts", async(req, res) => {
     try {
-        const productRealTime = await Product.paginate({})
+        const productRealTime = await Product.paginate({}, {lean: true})
         res.status(200).render("realTimeProducts", productRealTime)
     } catch (error) {
         res.status(500).send({status: "Error", message: error.message})
