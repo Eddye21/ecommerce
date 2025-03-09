@@ -1,22 +1,22 @@
-import express from "express"
+import http from "http"
 import dotenv from "dotenv"
+import express from "express"
+import {Server} from "socket.io"
 import connectMongoDB from "./db/db.js"
 import { engine } from "express-handlebars"
+import cartRouter from "./routes/cart.routes.js"
 import viewsRouter from "./routes/views.routes.js"
 import productRouter from "./routes/product.routes.js"
-import cartRouter from "./routes/cart.routes.js"
-import {Server} from "socket.io"
-import http from "http"
 
 dotenv.config()
 
 //Settings server
 const PORT = 8081
 const app = express()
-const server =http.createServer(app)
+const server = http.createServer(app)
 const io = new Server(server)
 app.use(express.json())
-app.use(express.static("public"))
+app.use(express.static('public'))
 
 //HandleBars
 app.engine("handlebars", engine())
@@ -33,7 +33,7 @@ app.use("/api/cart", cartRouter)
 
 //Websocket
 io.on("connection", (socket) => {
-    console.log("Nuevo usuario conectado")
+    console.log("Nuevo usuario conectado", socket.id)
 })
 
 //Listen server

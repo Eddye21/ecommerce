@@ -1,7 +1,10 @@
 import mongoose  from "mongoose"
 
 const cartSchema = mongoose.Schema({
-    product: Array
+    products: [{
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: "product"},
+        qty: Number
+    }]
 })
 
 const Cart = mongoose.model("cart", cartSchema)
