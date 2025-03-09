@@ -98,5 +98,19 @@ cartRouter.delete("/:cid", async (req, res) => {
     }
 })
 
+//Eliminar un producto del carrito 
+cartRouter.delete("/:cid/products/:pid", async(req, res) => {
+    try {
+        const { cid, pid } = req.params
+
+        const deleteOneProduct = await Cart.updateOne(
+            {_id: cid},
+            {$pull: { products: {productId: pid} } }
+        )
+        res.status(201).send({status: "Success",payload: deleteOneProduct})
+    } catch (error) {
+        res.status(500).send({status: "Error", message: error.message})
+    }
+})
 
 export default cartRouter
