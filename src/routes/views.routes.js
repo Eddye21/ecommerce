@@ -6,7 +6,7 @@ const viewsRouter = express ()
 viewsRouter.get("/", async(req, res) => {
     try {
         const page = parseInt(req.query.page) || 1
-        const limit = 3
+        const limit = parseInt(req.query.limit) || 3
         
         const listProducts = await Product.paginate({}, {page, limit, lean: true})
         res.status(200).render("home", listProducts)

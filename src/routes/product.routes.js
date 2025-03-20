@@ -24,6 +24,9 @@ productRouter.post("/", async(req, res) => {
         } = req.body
 
         const status = stock === 0 ? false : true
+
+        if(stock < 1) return res.status(400).send({status: "Errro", message: "Stock not valid, negative number"})
+
         const data = await Product.insertOne({title, description, thumbnail, price, code, stock, status})
 
         res.status(201).send({status: "success", payload: data})
