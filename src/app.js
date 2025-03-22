@@ -16,7 +16,7 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
 app.use(express.json())
-app.use(express.static('public'))
+app.use(express.static("../public"))
 
 //HandleBars
 app.engine("handlebars", engine())
@@ -40,3 +40,6 @@ io.on("connection", (socket) => {
 server.listen(PORT, () => {
     console.log(`Server online in port : http://localhost:${PORT} `)
 })
+
+//Github
+//https://github.com/Eddye21/ecommerce.git

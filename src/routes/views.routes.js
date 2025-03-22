@@ -7,8 +7,11 @@ viewsRouter.get("/", async(req, res) => {
     try {
         const page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit) || 3
-        
-        const listProducts = await Product.paginate({}, {page, limit, lean: true})
+        const sortOrder = parseInt(req.query.sort, 10) || 1 
+
+        const sort = { stock: sortOrder }
+
+        const listProducts = await Product.paginate({}, { page, limit, sort, lean: true,})
         res.status(200).render("home", listProducts)
     } catch (error) {
         res.status(500).send({status: "Error", message: error.message})
@@ -34,5 +37,17 @@ viewsRouter.get("/:uid", async(req, res) => {
         res.status(500).send({status: "Error", message: error.messages})
     }
 })
+
+viewsRouter.get('/ordenar', async (req, res) => {
+    try {
+        const resultados = await collection.find().sort({ stock: -1 }).toArray()
+
+        res.render('home', { datos: resultados })
+    } catch (error) {
+        console.error(error)
+        res.status(500).send('Error en el servidor')
+    }
+});
+
 
 export default viewsRouter
